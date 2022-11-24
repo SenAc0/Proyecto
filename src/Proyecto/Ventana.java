@@ -1,4 +1,3 @@
-
 package Proyecto;
 
 import java.awt.BorderLayout;
@@ -9,7 +8,9 @@ class Ventana extends JFrame{
     public Ventana(){
         this.setLayout(new BorderLayout());
         Panel p = new Panel();
+        PanelDeControl p2 = new PanelDeControl();
         add(p,BorderLayout.CENTER); //se agrega al centro
+        add(p2,BorderLayout.NORTH); //se agrega al centro
         
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);//activar cierre en la X 
         this.setSize(1000,800); //se pueden pasar como parámetros del constructor
