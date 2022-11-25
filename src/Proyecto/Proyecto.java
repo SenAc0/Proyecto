@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -39,8 +40,9 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     ArrayList<Ovalo> lista;
     ArrayList<Rectangulo> lista2;
     ArrayList<Linea> lista3;
+    ArrayList<Texto> lista4;
     Choice selector;
-
+    private Point startPoint;
 
     Label lb = new Label("String");
     
@@ -48,12 +50,12 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
    
     Point u;
     Point w;
-
     
     public Panel(){
         lista =  new ArrayList<>();
         lista2 =  new ArrayList<>();
         lista3 =  new ArrayList<>();
+        lista4 =  new ArrayList<>();
         
         add(lb);
         this.addMouseListener(this); //Hace posible el dar click
@@ -65,6 +67,8 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         selector.add("Rectangulo");
         selector.add("Label");
         selector.add("Linea");
+        selector.add("Texto");
+        selector.add("Mover Ultimo Rectangulo");
         add(selector);
         selector.addItemListener(this);
         JTextField editor = new JTextField();
@@ -85,8 +89,14 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     public ArrayList<Rectangulo> getLista2() {
         return lista2;
     }
+    public Rectangulo getRect(){
+        return lista2.get(0);
+    }
     public ArrayList<Linea> getLista3() {
         return lista3;
+    }
+    public ArrayList<Texto> getLista4() {
+        return lista4;
     }
 
 
@@ -101,11 +111,11 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     public void mouseClicked(MouseEvent e) {
         if(e.getButton()==1){
             if (selector.getSelectedItem()=="Ovalo") {
-                getLista().add(new Ovalo(e.getX(),e.getY()));
+                getLista().add(new Ovalo(e.getX()-50,e.getY()-50));
             }
             if (selector.getSelectedItem()=="Rectangulo") {
-                String nombreClase = JOptionPane.showInputDialog("Class");
-                getLista2().add(new Rectangulo(e.getX(),e.getY(), nombreClase));
+                String nombreClase = JOptionPane.showInputDialog("Indique el nombre de la Clase:");
+                getLista2().add(new Rectangulo(e.getX()-50,e.getY()-50, nombreClase));
             }
             if (selector.getSelectedItem()=="Label") {
                //Aqui deberia ponerse una Label, para colocar
@@ -122,12 +132,17 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
                             u = null;
                             w = null;
                         }
-                    
                     }
                  }
-                
-                   
-                
+            }
+            if(selector.getSelectedItem()=="Texto"){
+                String Txt = JOptionPane.showInputDialog("Indique el texto que desea escribir:");
+                getLista4().add(new Texto(e.getX(),e.getY(), Txt));
+            }
+            if(selector.getSelectedItem()=="Mover Ultimo Rectangulo"){
+                if(getLista2().size()>0){
+                    getLista2().get(getLista2().size()-1).setXY(e.getX(), e.getY());
+                }
             }
             repaint();
         }
@@ -145,13 +160,14 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
             g.setColor(Color.black);
             objLinea.paint(g);
         }
-
+        for(Texto Txt : getLista4()){
+            Txt.paint(g);
+        }
     }
 
 
     @Override
     public void mousePressed(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -194,7 +210,7 @@ class Ovalo{
 }
 class Rectangulo{
     int x,y;
-    String nombreClase;
+    String nombreClase = " ";
     public Rectangulo(int x, int y, String nombreClase){
         this.x=x;
         this.y=y;
@@ -208,11 +224,17 @@ class Rectangulo{
     public int getY() {
         return y;
     }
+    public void setXY(int x,int y){
+        this.x = x;
+        this.y = y;
+    }
     public void paint(Graphics g){
-        g.setColor(Color.orange);
-        g.fillRect(x, y, 100, 100);
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, 100, 15);
+        g.drawRect(x, y, 100, 85);
+        g.drawRect(x, y, 100, 170);
         g.setColor(Color.red);
-        g.drawString(nombreClase,x+50,y+10);
+        g.drawString(nombreClase,x+40,y+12);
     }
 }
 class PanelDeControl extends JPanel{
@@ -235,5 +257,19 @@ class Linea{
     }
     public void paint(Graphics g){
         g.drawLine(x1, y1, x2, y2);
+    }
+}
+
+class Texto{
+    private int x;
+    private int y;
+    private String Texto;
+    public Texto(int x,int y,String s){
+        this.x = x;
+        this.y = y;
+        this.Texto = s;
+    }
+    public void paint(Graphics g){
+        g.drawString(Texto, x, y);
     }
 }
