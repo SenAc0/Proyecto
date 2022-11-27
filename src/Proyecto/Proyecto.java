@@ -65,7 +65,10 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     ArrayList<Linea> lista3;
     ArrayList<Texto> lista4;
     Choice selector;
+    
     Rectangulo RectanguloSeleccionado = null;
+    Texto TextoSeleccionado = null;
+    
     private Point startPoint;
 
     Label lb = new Label("String");
@@ -85,6 +88,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         this.addMouseListener(this); //Hace posible el dar click
         this.addMouseMotionListener(this); //Hace posible el dar click
         this.setBackground(Color.white);
+        
         selector = new Choice();
         selector.add("Seleccionar");
         selector.add("Ovalo");
@@ -93,6 +97,8 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         selector.add("Linea");
         selector.add("Texto");
         selector.add("Mover Rectangulo");
+        selector.add("Mover Texto");
+        
         add(selector);
         selector.addItemListener(this);
         JTextField editor = new JTextField();
@@ -135,6 +141,11 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
                 RectanguloSeleccionado.setXY(e.getX()-50,e.getY()-50);
             }
         }
+        if(selector.getSelectedItem()=="Mover Texto"){
+            if(TextoSeleccionado != null){
+                TextoSeleccionado.setXY(e.getX(),e.getY());
+            }
+        }
         repaint();
     }
     @Override
@@ -170,13 +181,20 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
                 getLista4().add(new Texto(e.getX(),e.getY(), Txt));
             }
             if(selector.getSelectedItem()=="Mover Rectangulo"){
-                    for(int i=0 ; i<getLista2().size() ; i++){
-                        if(e.getX()>= getLista2().get(i).getX() && e.getY()<=getLista2().get(i).getY()+170 && e.getX()<=getLista2().get(i).getX()+100 && e.getY()>=getLista2().get(i).getY()){
-                            RectanguloSeleccionado = getLista2().get(i);
-                            System.out.println("seleccionaste un rectangulo");
-                        }
+                for(int i=0 ; i<getLista2().size() ; i++){
+                    if(e.getX()>= getLista2().get(i).getX() && e.getY()<=getLista2().get(i).getY()+170 && e.getX()<=getLista2().get(i).getX()+100 && e.getY()>=getLista2().get(i).getY()){
+                        RectanguloSeleccionado = getLista2().get(i);
+                        System.out.println("seleccionaste un rectangulo");
                     }
-                
+                }
+            }
+            if(selector.getSelectedItem()=="Mover Texto"){
+                for(int i=0 ; i<getLista4().size() ; i++){
+                    if(e.getX()>= getLista4().get(i).getX() && e.getY()<=getLista4().get(i).getY()+6 && e.getX()<=getLista4().get(i).getX()+7*(getLista4().get(i).getTexto().length()) && e.getY()>=getLista4().get(i).getY()-6){
+                        TextoSeleccionado = getLista4().get(i);
+                        System.out.println("seleccionaste un Texto");
+                    }
+                }
             }
             repaint();
         }
@@ -301,6 +319,19 @@ class Texto{
         this.x = x;
         this.y = y;
         this.Texto = s;
+    }
+    public void setXY(int x,int y){
+        this.x = x;
+        this.y = y;
+    }
+    public int getX(){
+        return x;
+    }
+    public int getY(){
+        return y;
+    }
+    public String getTexto(){
+        return Texto;
     }
     public void paint(Graphics g){
         g.drawString(Texto, x, y);
