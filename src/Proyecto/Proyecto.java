@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Label;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -14,6 +15,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -29,7 +31,28 @@ import javax.swing.SwingUtilities;
  * @author sebaa
  */
 public class Proyecto {
+    public static void drawArrow(final Graphics2D g, final int x1, final int y1, final int x2, final int y2) {
+        final int ARR_SIZE = 5;
 
+        // Get the current transform
+        AffineTransform saveAT = g.getTransform();
+
+        double dx = x2 - x1, dy = y2 - y1;
+        double angle = Math.atan2(dy, dx);
+        int len = (int) Math.sqrt(dx * dx + dy * dy);
+        AffineTransform at = AffineTransform.getTranslateInstance(x1, y1);
+        at.concatenate(AffineTransform.getRotateInstance(angle));
+        // Perform transformation
+        g.transform(at);
+
+        // Draw horizontal arrow starting in (0, 0)
+        g.drawLine(0, 0, (int) len, 0);
+        g.fillPolygon(new int[] { len, len - ARR_SIZE, len - ARR_SIZE, len },
+                new int[] { 0, -ARR_SIZE, ARR_SIZE, 0 }, 4);
+
+        // Restore original transform
+        g.setTransform(saveAT);
+    }
     public static void main(String[] args) {
         Ventana v = new Ventana();
     }
@@ -42,6 +65,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     ArrayList<Linea> lista3;
     ArrayList<Texto> lista4;
     Choice selector;
+    Rectangulo RectanguloSeleccionado = null;
     private Point startPoint;
 
     Label lb = new Label("String");
@@ -68,7 +92,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         selector.add("Label");
         selector.add("Linea");
         selector.add("Texto");
-        selector.add("Mover Ultimo Rectangulo");
+        selector.add("Mover Rectangulo");
         add(selector);
         selector.addItemListener(this);
         JTextField editor = new JTextField();
@@ -106,6 +130,12 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
             lb.setLocation(e.getPoint());
             lb.repaint();
         }
+        if(selector.getSelectedItem()=="Mover Rectangulo"){
+            if(RectanguloSeleccionado != null){
+                RectanguloSeleccionado.setXY(e.getX()-50,e.getY()-50);
+            }
+        }
+        repaint();
     }
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -122,7 +152,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
             }
             if(selector.getSelectedItem()=="Linea"){
                  for(Rectangulo objRectangulo : getLista2()){
-                    if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),100,100).contains(e.getPoint())){
+                    if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
                          if (u==null) {
                             u = new Point(e.getX(),e.getY());
                         }else{
@@ -139,10 +169,14 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
                 String Txt = JOptionPane.showInputDialog("Indique el texto que desea escribir:");
                 getLista4().add(new Texto(e.getX(),e.getY(), Txt));
             }
-            if(selector.getSelectedItem()=="Mover Ultimo Rectangulo"){
-                if(getLista2().size()>0){
-                    getLista2().get(getLista2().size()-1).setXY(e.getX(), e.getY());
-                }
+            if(selector.getSelectedItem()=="Mover Rectangulo"){
+                    for(int i=0 ; i<getLista2().size() ; i++){
+                        if(e.getX()>= getLista2().get(i).getX() && e.getY()<=getLista2().get(i).getY()+170 && e.getX()<=getLista2().get(i).getX()+100 && e.getY()>=getLista2().get(i).getY()){
+                            RectanguloSeleccionado = getLista2().get(i);
+                            System.out.println("seleccionaste un rectangulo");
+                        }
+                    }
+                
             }
             repaint();
         }
@@ -233,7 +267,6 @@ class Rectangulo{
         g.drawRect(x, y, 100, 15);
         g.drawRect(x, y, 100, 85);
         g.drawRect(x, y, 100, 170);
-        g.setColor(Color.red);
         g.drawString(nombreClase,x+40,y+12);
     }
 }
