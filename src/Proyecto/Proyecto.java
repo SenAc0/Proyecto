@@ -64,6 +64,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     ArrayList<Rectangulo> lista2;
     ArrayList<Linea> lista3;
     ArrayList<Texto> lista4;
+    ArrayList<Ovalo> lista5;
     Choice selector;
     
     Rectangulo RectanguloSeleccionado = null;
@@ -83,6 +84,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         lista2 =  new ArrayList<>();
         lista3 =  new ArrayList<>();
         lista4 =  new ArrayList<>();
+        lista5 =  new ArrayList<>();
         
         add(lb);
         this.addMouseListener(this); //Hace posible el dar click
@@ -98,6 +100,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         selector.add("Texto");
         selector.add("Mover Rectangulo");
         selector.add("Mover Texto");
+        selector.add("Dibujar");
         
         add(selector);
         selector.addItemListener(this);
@@ -128,6 +131,9 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     public ArrayList<Texto> getLista4() {
         return lista4;
     }
+    public ArrayList<Ovalo> getLista5() {
+        return lista5;
+    }
 
 
     @Override
@@ -146,13 +152,16 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
                 TextoSeleccionado.setXY(e.getX(),e.getY());
             }
         }
+        if(selector.getSelectedItem()=="Dibujar"){
+            lista5.add(new Ovalo(e.getX(),e.getY(),2,2));
+        }
         repaint();
     }
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getButton()==1){
             if (selector.getSelectedItem()=="Ovalo") {
-                getLista().add(new Ovalo(e.getX()-50,e.getY()-50));
+                getLista().add(new Ovalo(e.getX()-50,e.getY()-50,100,100));
             }
             if (selector.getSelectedItem()=="Rectangulo") {
                 String nombreClase = JOptionPane.showInputDialog("Indique el nombre de la Clase:");
@@ -215,6 +224,9 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         for(Texto Txt : getLista4()){
             Txt.paint(g);
         }
+        for (Ovalo objOvalo : getLista5()) {
+            objOvalo.paint(g);
+        }
     }
 
 
@@ -251,13 +263,15 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
 
 
 class Ovalo{
-    int x,y;
-    public Ovalo(int x, int y){
+    int x,y,w,h;
+    public Ovalo(int x, int y,int w,int h){
         this.x=x;
         this.y=y;
+        this.w = w;
+        this.h = h;
     }
     public void paint(Graphics g){
-        g.fillOval(x, y, 100, 100);
+        g.fillOval(x, y, w, h);
     }
 }
 class Rectangulo{
