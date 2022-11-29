@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Label;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -16,6 +17,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -59,7 +62,7 @@ public class Proyecto {
     
 }
 
-class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemListener{
+class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemListener, Serializable{
     ArrayList<Ovalo> lista;
     ArrayList<Rectangulo> lista2;
     ArrayList<Linea> lista3;
@@ -67,14 +70,13 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     ArrayList<Ovalo> lista5;
     Choice selector;
     
-    Rectangulo RectanguloSeleccionado = null;
-    Texto TextoSeleccionado = null;
+    private Rectangulo RectanguloSeleccionado = null;
+    private Rectangulo RectanguloSelec = null;
+    private int Rectanguloi;
+    private Texto TextoSeleccionado = null;
     
-    private Point startPoint;
 
-    Label lb = new Label("String");
-    
-    JEditorPane editor;
+
    
     Point u;
     Point w;
@@ -86,7 +88,6 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         lista4 =  new ArrayList<>();
         lista5 =  new ArrayList<>();
         
-        add(lb);
         this.addMouseListener(this); //Hace posible el dar click
         this.addMouseMotionListener(this); //Hace posible el dar click
         this.setBackground(Color.white);
@@ -95,20 +96,17 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         selector.add("Seleccionar");
         selector.add("Ovalo");
         selector.add("Rectangulo");
-        selector.add("Label");
         selector.add("Linea");
         selector.add("Texto");
         selector.add("Mover Rectangulo");
         selector.add("Mover Texto");
         selector.add("Dibujar");
+        selector.add("Borrar");
+        selector.add("Testeo de Selector");
+        selector.add("Testeo de Movedor");
         
         add(selector);
         selector.addItemListener(this);
-        JTextField editor = new JTextField();
-        editor.setText("ola");
-        JScrollPane scrollPane = new JScrollPane(editor);
-        scrollPane.setBounds(50,50,300,300);
-        add(scrollPane);
         u = null;
         w = null;
     }
@@ -138,10 +136,10 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(e.getModifiersEx() == MouseEvent.BUTTON3_DOWN_MASK){
-            lb.setLocation(e.getPoint());
-            lb.repaint();
+        if(selector.getSelectedItem()=="Testeo de Selector"){
+            w = new Point(e.getX(), e.getY());
         }
+        
         if(selector.getSelectedItem()=="Mover Rectangulo"){
             if(RectanguloSeleccionado != null){
                 RectanguloSeleccionado.setXY(e.getX()-50,e.getY()-50);
@@ -154,6 +152,21 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         }
         if(selector.getSelectedItem()=="Dibujar"){
             lista5.add(new Ovalo(e.getX(),e.getY(),2,2));
+        }
+        if (selector.getSelectedItem()=="Testeo de Movedor"){
+            if(RectanguloSelec != null){
+                this.getLista2().set(Rectanguloi,new Rectangulo(e.getX(),e.getY(),RectanguloSelec.getNombreClase()));
+                int iE = 0;
+                for (Linea objLinea : getLista3()) {
+                    if(new Rectangle(objLinea.getX1()-50, objLinea.getY1()-50,100 , 100).contains(e.getPoint())){
+                        getLista3().set(iE,new Linea(e.getX(),e.getY(),objLinea.getX2(),objLinea.getY2()));
+                    }
+                    else if(new Rectangle(objLinea.getX2()-50, objLinea.getY2()-50, 100, 100).contains(e.getPoint())){
+                        getLista3().set(iE,new Linea(objLinea.getX1(),objLinea.getY1(),e.getX(),e.getY()));
+                    }
+                    iE++;
+                }
+            }
         }
         repaint();
     }
@@ -205,38 +218,50 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
                     }
                 }
             }
+            if(selector.getSelectedItem()=="Borrar"){
+                for(Rectangulo objRectangulo : getLista2()){
+                    if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
+                        getLista2().remove(objRectangulo);
+                    }
+                 }
+            }
             repaint();
         }
     }
-    @Override
-    public void paint(Graphics g){
-        super.paint(g);
-        for(Rectangulo objRectangulo : getLista2()){
-            objRectangulo.paint(g);
-        }
-        for (Ovalo objOvalo : getLista()) {
-            objOvalo.paint(g);
-        }
-        for (Linea objLinea : getLista3()) {
-            g.setColor(Color.black);
-            objLinea.paint(g);
-        }
-        for(Texto Txt : getLista4()){
-            Txt.paint(g);
-        }
-        for (Ovalo objOvalo : getLista5()) {
-            objOvalo.paint(g);
-        }
-    }
+
 
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(selector.getSelectedItem()=="Testeo de Selector"){
+            u = new Point(e.getX(), e.getY());
+            w = u;
+        }
+        if (selector.getSelectedItem()=="Testeo de Movedor") {
+            int iN = 0;
+            for(Rectangulo objRectangulo : getLista2()){
+                if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
+                    RectanguloSelec = objRectangulo;
+                    Rectanguloi=iN;
+                    break;
+                }
+                iN++;
+            }
+        }
+        repaint();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(selector.getSelectedItem()=="Testeo de Selector"){
+            u = null;
+            w = null;
+        }
+        if (selector.getSelectedItem()=="Testeo de Movedor"){
+            RectanguloSelec = null;
+            Rectanguloi = -1;
+        }
+        repaint();
     }
 
     @Override
@@ -256,6 +281,38 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     @Override
     public void itemStateChanged(ItemEvent e) {
 
+    }
+        @Override
+    public void paint(Graphics g){
+        super.paint(g);
+        for(Rectangulo objRectangulo : getLista2()){
+            objRectangulo.paint(g);
+        }
+        for (Ovalo objOvalo : getLista()) {
+            objOvalo.paint(g);
+        }
+        for (Linea objLinea : getLista3()) {
+            g.setColor(Color.black);
+            objLinea.paint(g);
+        }
+        for(Texto Txt : getLista4()){
+            Txt.paint(g);
+        }
+        for (Ovalo objOvalo : getLista5()) {
+            objOvalo.paint(g);
+        }
+        if(selector.getSelectedItem()=="Testeo de Selector"){
+           Graphics2D g2 = (Graphics2D) g;
+            if (u != null && w != null) {
+                g2.setPaint(Color.red);
+                Shape r = makeRectangle(u.x, u.y, w.x, w.y);
+                g2.draw(r);
+            }
+        }
+        
+    }
+        private Rectangle2D.Float makeRectangle(int x1, int y1, int x2, int y2) {
+            return new Rectangle2D.Float(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2), Math.abs(y1 - y2));
     }
 }
 
@@ -280,7 +337,10 @@ class Rectangulo{
     public Rectangulo(int x, int y, String nombreClase){
         this.x=x;
         this.y=y;
-        this.nombreClase=nombreClase;
+        if (nombreClase!=null) {
+            this.nombreClase=nombreClase;
+        }
+        
     }
 
     public int getX() {
@@ -289,6 +349,10 @@ class Rectangulo{
 
     public int getY() {
         return y;
+    }
+
+    public String getNombreClase() {
+        return nombreClase;
     }
     public void setXY(int x,int y){
         this.x = x;
@@ -313,6 +377,22 @@ class Linea{
     int x1;
     int y1;
     int x2;
+
+    public int getX1() {
+        return x1;
+    }
+
+    public int getY1() {
+        return y1;
+    }
+
+    public int getX2() {
+        return x2;
+    }
+
+    public int getY2() {
+        return y2;
+    }
     int y2;
     public Linea(int x1, int y1, int x2, int y2){
         this.x1=x1;
@@ -332,7 +412,10 @@ class Texto{
     public Texto(int x,int y,String s){
         this.x = x;
         this.y = y;
-        this.Texto = s;
+        if (s==null) {
+            this.Texto = "";
+        }else 
+         this.Texto = s;
     }
     public void setXY(int x,int y){
         this.x = x;
