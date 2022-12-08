@@ -224,6 +224,16 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
                         getLista6().remove(i);
                     }
                 }
+                for (int i = 0; i < getLista().size(); i++) {
+                    if (new Rectangle(getLista().get(i).getX(),getLista().get(i).getY(),170,170).contains(e.getPoint())){
+                        getLista().remove(i);
+                }
+                }
+                for (int i = 0; i < getLista5().size(); i++) {
+                    if (new Rectangle(getLista5().get(i).getX(),getLista5().get(i).getY(),170,170).contains(e.getPoint())){
+                        getLista5().remove(i);
+                }
+                }
                 /*for(Linea objLinea : getLista3()){
                     if (new Rectangle(objLinea.getX1(),objLinea.getY1(),170,170).contains(e.getPoint())){
                         getLista3().remove(objLinea);
