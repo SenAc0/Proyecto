@@ -24,7 +24,13 @@ public class Proyecto {
 class PanelDeControl extends JPanel implements ActionListener{
     JButton b1;
     JButton b2;
-    public PanelDeControl(){
+    JPanel p;
+    Panel p1;
+    Panel p2;
+    public PanelDeControl(JPanel p,Panel opcion1, Panel opcion2){
+        this.p=p;
+        this.p1=opcion1;
+        this.p2=opcion2;
         this.setLayout(new FlowLayout());
         b1 = new JButton("1");
         b2 = new JButton("2");
@@ -41,11 +47,22 @@ class PanelDeControl extends JPanel implements ActionListener{
         if(e.getSource().equals(b1)){
            // panel2.
            System.out.println("1");
+           p.add(p1);
+           p1.setVisible(true);
+           p2.setVisible(false);
+           p.validate();
+           p.repaint();
         }
         if(e.getSource().equals(b2)){
            // panel2.
            System.out.println("2");
+           p2.setVisible(true);
+           p.add(p2);
+           p1.setVisible(false);
+           p.validate();
+           p.repaint();
         }
+            
     }
 
     public JButton getB1() {
