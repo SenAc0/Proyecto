@@ -10,6 +10,12 @@ class Ovalo{
         this.w = w;
         this.h = h;
     }
+    int getX(){
+        return x;
+    }
+        int getY(){
+        return y;
+    }
     public void paint(Graphics g){
         g.fillOval(x, y, w, h);
     }
