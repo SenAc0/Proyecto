@@ -25,6 +25,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     ArrayList<Texto> lista4;
     ArrayList<Ovalo> lista5;
     ArrayList<Flecha> lista6;
+    ArrayList<Goma> lista7;
     Choice selector;
     
     private Rectangulo RectanguloSeleccionado = null;
@@ -42,6 +43,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         lista4 =  new ArrayList<>();
         lista5 =  new ArrayList<>();
         lista6 =  new ArrayList<>();
+        lista7 = new ArrayList<>();
         
         this.addMouseListener(this); //Hace posible el dar click
         this.addMouseMotionListener(this); //Hace posible el dar click
@@ -58,6 +60,7 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         selector.add("Mover Texto");
         selector.add("Dibujar");
         selector.add("Borrar");
+        selector.add("Goma");
         selector.add("Testeo de Selector");
         selector.add("Testeo de Movedor");
         
@@ -92,6 +95,9 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
     public ArrayList<Flecha> getLista6() {
         return lista6;
     }
+    public ArrayList<Goma> getLista7(){
+        return lista7;
+    }
 
 
     @Override
@@ -112,6 +118,9 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         }
         if(selector.getSelectedItem()=="Dibujar"){
             lista5.add(new Ovalo(e.getX(),e.getY(),2,2));
+        }
+        if(selector.getSelectedItem()=="Goma"){
+            lista7.add(new Goma(e.getX(),e.getY(),5,5));
         }
         if (selector.getSelectedItem()=="Testeo de Movedor"){
             if(RectanguloSelec != null){
@@ -149,6 +158,9 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
             if (selector.getSelectedItem()=="Rectangulo") {
                 String nombreClase = JOptionPane.showInputDialog("Indique el nombre de la Clase:");
                 getLista2().add(new Rectangulo(e.getX()-50,e.getY()-50, nombreClase));
+            }
+            if (selector.getSelectedItem()=="Goma") {
+                getLista7().add(new Goma(e.getX()-50,e.getY()-50,100,100));
             }
             if (selector.getSelectedItem()=="Label") {
                //Aqui deberia ponerse una Label, para colocar
@@ -319,6 +331,9 @@ class Panel extends JPanel implements MouseMotionListener, MouseListener, ItemLi
         }
         for (Ovalo objOvalo : getLista5()) {
             objOvalo.paint(g);
+        }
+        for (Goma objGoma : getLista7()) {
+            objGoma.paint(g);
         }
         if(selector.getSelectedItem()=="Testeo de Selector"){
 
