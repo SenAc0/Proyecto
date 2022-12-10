@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Proyecto {
 class PanelDeControl extends JPanel implements ActionListener{
     JButton b1;
     JButton b2;
+    
     JPanel p;
     Panel p1;
     Panel p2;
@@ -39,6 +41,7 @@ class PanelDeControl extends JPanel implements ActionListener{
         this.setBackground(Color.blue);
         b1.addActionListener(this);
         b2.addActionListener(this);
+        
 
     }
 
