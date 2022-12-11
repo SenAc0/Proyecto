@@ -24,14 +24,17 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
     
     Pizarra p;
     
-    
     Choice selector;
+    Choice selectorMover;
     
     private Rectangulo RectanguloSeleccionado = null;
     private Rectangulo RectanguloSelec = null;
     private int Rectanguloi;
     private Texto TextoSeleccionado = null;
-      
+    
+    ButtonGroup bg;
+    JRadioButton r1,r2,r3,r4,r5,r6,r7,r8,r9;
+    
     Point u;
     Point w;
     
@@ -43,21 +46,35 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         this.setBackground(Color.white);
         
         selector = new Choice();
-        selector.add("Seleccionar");
-        selector.add("Ovalo");
-        selector.add("Rectangulo");
+        selectorMover = new Choice();
+        
+        selector.add("Que conector desea");
         selector.add("Linea");
         selector.add("Flecha");
-        selector.add("Texto");
-        selector.add("Mover Rectangulo");
-        selector.add("Mover Texto");
-        selector.add("Dibujar");
         selector.add("Borrar");
         selector.add("Goma");
-        selector.add("Testeo de Selector");
-        selector.add("Testeo de Movedor");
+        
+        selectorMover.add("Que desea mover");
+        selectorMover.add("Rectangulo");
+        selectorMover.add("Texto");
+        selectorMover.add("Testeo de Selector");
+        selectorMover.add("Rectangulo y linea");
+        
+        r1=new JRadioButton("Dibujar");    
+        r2=new JRadioButton("Rectangulo"); 
+        r3=new JRadioButton("Ovalo");    
+        r4=new JRadioButton("Borrar"); 
+        r5=new JRadioButton("Texto");
+        r6=new JRadioButton("Mover");
+        r7=new JRadioButton("Conectores");
+        r8=new JRadioButton("Goma");
+                
+        bg=new ButtonGroup();    
+        bg.add(r1);bg.add(r2);bg.add(r3);bg.add(r4);bg.add(r5);bg.add(r6);bg.add(r7);bg.add(r8);
+        add(r8);add(r1);add(r2);add(r3);add(r4); add(r5);add(r6);add(r7);
         
         add(selector);
+        add(selectorMover);
         selector.addItemListener(this);
         u = null;
         w = null;
@@ -65,29 +82,28 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(selector.getSelectedItem()=="Testeo de Selector"){
+        if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
             w = new Point(e.getX(), e.getY());
         }
-        
-        if(selector.getSelectedItem()=="Mover Rectangulo"){
+        if(selectorMover.getSelectedItem()=="Rectangulo"&&r6.isSelected()){
             if(RectanguloSeleccionado != null){
                 RectanguloSeleccionado.setXY(e.getX()-50,e.getY()-50);
             }
         }
-        if(selector.getSelectedItem()=="Mover Texto"){
-            if(TextoSeleccionado != null){
+        if(selectorMover.getSelectedItem()=="Texto"&&r6.isSelected()){
+            if(TextoSeleccionado!=null){
                 TextoSeleccionado.setXY(e.getX(),e.getY());
             }
         }
-        if(selector.getSelectedItem()=="Dibujar"){
+        if(r1.isSelected()){
             p.getLista5().add(new Ovalo(e.getX(),e.getY(),2,2));
         }
-        if(selector.getSelectedItem()=="Goma"){
+        if(r8.isSelected()){
             p.getLista7().add(new Goma(e.getX(),e.getY(),5,5));
         }
-        if (selector.getSelectedItem()=="Testeo de Movedor"){
+        if (selectorMover.getSelectedItem()=="Rectangulo y linea"&&r6.isSelected()){
             if(RectanguloSelec != null){
-                p.getLista2().set(Rectanguloi,new Rectangulo(e.getX(),e.getY(),RectanguloSelec.getNombreClase()));
+                this.p.getLista2().set(Rectanguloi,new Rectangulo(e.getX(),e.getY(),RectanguloSelec.getNombreClase()));
                 int iE = 0;
                 int iA = 0;
                 for (Linea objLinea : p.getLista3()) {
@@ -111,24 +127,24 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
             }
         }
         repaint();
+    
     }
-    @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getButton()==1){
-            if (selector.getSelectedItem()=="Ovalo") {
+            if (r3.isSelected()) {
                 p.getLista().add(new Ovalo(e.getX()-50,e.getY()-50,100,100));
             }
-            if (selector.getSelectedItem()=="Rectangulo") {
+            if (r2.isSelected()) {
                 String nombreClase = JOptionPane.showInputDialog("Indique el nombre de la Clase:");
                 p.getLista2().add(new Rectangulo(e.getX()-50,e.getY()-50, nombreClase));
             }
-            if (selector.getSelectedItem()=="Goma") {
+            if (r8.isSelected()) {
                 p.getLista7().add(new Goma(e.getX()-50,e.getY()-50,100,100));
             }
             if (selector.getSelectedItem()=="Label") {
                //Aqui deberia ponerse una Label, para colocar
             }
-            if(selector.getSelectedItem()=="Linea"){
+            if(selector.getSelectedItem()=="Linea"&&r7.isSelected()){
                  for(Rectangulo objRectangulo : p.getLista2()){
                     if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
                          if (u==null) {
@@ -143,7 +159,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                     }
                  }
             }
-            if(selector.getSelectedItem()=="Flecha"){
+            if(selector.getSelectedItem()=="Flecha"&&r7.isSelected()){
                  for(Rectangulo objRectangulo : p.getLista2()){
                     if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
                          if (u==null) {
@@ -158,27 +174,25 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                     }
                  }
             }
-            if(selector.getSelectedItem()=="Texto"){
+            if(r5.isSelected()){
                 String Txt = JOptionPane.showInputDialog("Indique el texto que desea escribir:");
                 p.getLista4().add(new Texto(e.getX(),e.getY(), Txt));
             }
-            if(selector.getSelectedItem()=="Mover Rectangulo"){
+            if(selectorMover.getSelectedItem()=="Rectangulo"&&r6.isSelected()){
                 for(int i=0 ; i<p.getLista2().size() ; i++){
                     if(e.getX()>= p.getLista2().get(i).getX() && e.getY()<=p.getLista2().get(i).getY()+170 && e.getX()<=p.getLista2().get(i).getX()+100 && e.getY()>=p.getLista2().get(i).getY()){
                         RectanguloSeleccionado = p.getLista2().get(i);
-                        System.out.println("seleccionaste un rectangulo");
                     }
                 }
             }
-            if(selector.getSelectedItem()=="Mover Texto"){
+            if(selectorMover.getSelectedItem()=="Texto"&&r6.isSelected()){
                 for(int i=0 ; i<p.getLista4().size() ; i++){
                     if(e.getX()>= p.getLista4().get(i).getX() && e.getY()<=p.getLista4().get(i).getY()+6 && e.getX()<=p.getLista4().get(i).getX()+7*(p.getLista4().get(i).getTexto().length()) && e.getY()>=p.getLista4().get(i).getY()-6){
                         TextoSeleccionado = p.getLista4().get(i);
-                        System.out.println("seleccionaste un Texto");
                     }
                 }
             }
-            if(selector.getSelectedItem()=="Borrar"){
+            if(r4.isSelected()){
                 /*for(Rectangulo objRectangulo : getLista2()){
                     if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
                         getLista2().remove(objRectangulo);
@@ -223,11 +237,11 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(selector.getSelectedItem()=="Testeo de Selector"){
+        if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
             u = new Point(e.getX(), e.getY());
             w = u;
         }
-        if (selector.getSelectedItem()=="Testeo de Movedor") {
+        if (selectorMover.getSelectedItem()=="Rectangulo y linea"&&r6.isSelected()) {
             int iN = 0;
             for(Rectangulo objRectangulo : p.getLista2()){
                 if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
@@ -243,11 +257,11 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(selector.getSelectedItem()=="Testeo de Selector"){
+        if(selector.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
             u = null;
             w = null;
         }
-        if (selector.getSelectedItem()=="Testeo de Movedor"){
+        if (selector.getSelectedItem()=="Rectangulo y linea"&&r6.isSelected()){
             RectanguloSelec = null;
             Rectanguloi = -1;
         }
@@ -321,5 +335,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
     private Rectangle2D.Float makeRectangle(int x1, int y1, int x2, int y2) {
         return new Rectangle2D.Float(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2), Math.abs(y1 - y2));
     }
+
+    
 }
 
