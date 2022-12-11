@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 
-public class Flecha {
+public class Flecha implements Serializable {
     int x1;
     int y1;
     int x2;

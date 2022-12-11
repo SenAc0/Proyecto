@@ -1,8 +1,9 @@
 package Proyecto;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
-class Linea{
+public class Linea implements Serializable{
     int x1;
     int y1;
     int x2;

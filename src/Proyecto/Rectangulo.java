@@ -2,8 +2,9 @@ package Proyecto;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-class Rectangulo{
+public class Rectangulo implements Serializable{
     int x,y;
     String nombreClase = " ";
     public Rectangulo(int x, int y, String nombreClase){

@@ -1,8 +1,9 @@
 package Proyecto;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
-class Texto{
+public class Texto implements Serializable{
     private int x;
     private int y;
     private String Texto;

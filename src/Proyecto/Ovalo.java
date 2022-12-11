@@ -1,8 +1,9 @@
 package Proyecto;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
-class Ovalo{
+public class Ovalo implements Serializable{
     int x,y,w,h;
     public Ovalo(int x, int y,int w,int h){
         this.x=x;
@@ -10,10 +11,10 @@ class Ovalo{
         this.w = w;
         this.h = h;
     }
-    int getX(){
+    public int getX(){
         return x;
     }
-        int getY(){
+    public int getY(){
         return y;
     }
     public void paint(Graphics g){
