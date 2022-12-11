@@ -75,18 +75,14 @@ public class PanelDeControl extends JPanel implements ActionListener{
         if(e.getSource().equals(bguardar)){
             System.out.println("hola");
             try{
-                for(int i=0;i<6;++i){
-                    ObjectOutputStream escribiendo_fichero1=new ObjectOutputStream(new FileOutputStream("C:\\Users\\sebaa\\Documents\\NetBeansProjects\\hola\\PRUEBASERIALIZACION/pruebaser1.dat"));
+                    ObjectOutputStream escribiendo_fichero1=new ObjectOutputStream(new FileOutputStream("pruebaser1.dat"));
                     escribiendo_fichero1.writeObject(v.getPizarra1());
                     escribiendo_fichero1.flush();
                     escribiendo_fichero1.close();
-                    Thread.sleep(2000);
-        }
+        
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
             }
                 
@@ -101,12 +97,7 @@ public class PanelDeControl extends JPanel implements ActionListener{
             
             FileInputStream fileInputStream;
             try {
-                Pizarra p = new Pizarra();
-                Rectangulo r = new Rectangulo(50,50,"hola");
-                p.getLista2().add(r);
-                v.setPanelPizarra1(p);
-                Thread.sleep(2000);
-                fileInputStream = new FileInputStream("C:\\Users\\sebaa\\Documents\\NetBeansProjects\\hola\\PRUEBASERIALIZACION/pruebaser1.dat");
+                fileInputStream = new FileInputStream("pruebaser1.dat");
                 ObjectInputStream objectInputStream= new ObjectInputStream(fileInputStream);
                 Pizarra p3 = (Pizarra) objectInputStream.readObject();
                 objectInputStream.close();
@@ -116,8 +107,6 @@ public class PanelDeControl extends JPanel implements ActionListener{
             } catch (IOException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
             }
             

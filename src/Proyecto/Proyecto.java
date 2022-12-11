@@ -25,14 +25,6 @@ public class Proyecto {
     
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         Ventana v=new Ventana();
-        /*while(1==1){
-            System.out.println(v.getP1().getPizarra().getLista().size());
-            System.out.println(v.getP3().getP1().getPizarra().getLista().size());
-            Thread.sleep(1000);
-        }*/
-            System.out.println(v.getP3().getP1().getPizarra().getLista().size());
-        
-            //Thread.sleep(2000);
                 
             
             
