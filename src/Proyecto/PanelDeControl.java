@@ -31,6 +31,7 @@ public class PanelDeControl extends JPanel implements ActionListener{
     JButton b2;
     JButton bguardar;
     JButton bcargar;
+    JButton bBorrarTodo;
     JPanel p;
     Panel p1;
     Panel p2;
@@ -46,9 +47,10 @@ public class PanelDeControl extends JPanel implements ActionListener{
         b2 = new JButton("2");
         bguardar = new JButton("Guardar");
         bcargar = new JButton("Cargar");
-        add(b1);add(b2);add(bguardar);add(bcargar);
+        bBorrarTodo = new JButton("Borrar todo");
+        add(b1);add(b2);add(bguardar);add(bcargar);add(bBorrarTodo);
         this.setBackground(Color.blue);
-        b1.addActionListener(this);b2.addActionListener(this);bguardar.addActionListener(this);bcargar.addActionListener(this);
+        b1.addActionListener(this);b2.addActionListener(this);bguardar.addActionListener(this);bcargar.addActionListener(this);bBorrarTodo.addActionListener(this);
 
     }
 
@@ -72,8 +74,15 @@ public class PanelDeControl extends JPanel implements ActionListener{
            p.validate();
            p.repaint();
         }
+        if(e.getSource().equals(bBorrarTodo)){
+            Pizarra pTemp = new Pizarra();
+            if(p1.isVisible()){
+                p1.setPizarra(pTemp);
+            }else{
+                p2.setPizarra(pTemp);
+            }
+        }
         if(e.getSource().equals(bguardar)){
-            System.out.println("hola");
             try{
                     ObjectOutputStream escribiendo_fichero1=new ObjectOutputStream(new FileOutputStream("pruebaser1.dat"));
                     escribiendo_fichero1.writeObject(v.getPizarra1());
@@ -90,11 +99,6 @@ public class PanelDeControl extends JPanel implements ActionListener{
             
         }
         if(e.getSource().equals(bcargar)){
-            System.out.println("chao");
-            
-            
-            
-            
             FileInputStream fileInputStream;
             try {
                 fileInputStream = new FileInputStream("pruebaser1.dat");

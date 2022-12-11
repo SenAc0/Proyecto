@@ -33,7 +33,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
     private Texto TextoSeleccionado = null;
     
     ButtonGroup bg;
-    JRadioButton r1,r2,r3,r4,r5,r6,r7,r8,r9;
+    JRadioButton r1,r2,r3,r4,r5,r6,r7,r8;
     
     Point u;
     Point w;
@@ -80,6 +80,8 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         w = null;
     }
 
+    
+    
     @Override
     public void mouseDragged(MouseEvent e) {
         if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
