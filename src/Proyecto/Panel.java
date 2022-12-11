@@ -32,7 +32,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
     private Texto TextoSeleccionado = null;
     
     ButtonGroup bg;
-    JRadioButton r1,r2,r3,r4,r5,r6,r7,r8;
+    JRadioButton r1,r2,r3,r4,r5,r6,r7,r8,r9;
     
     Point u;
     Point w;
@@ -50,13 +50,10 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         selector.add("Que conector desea");
         selector.add("Linea");
         selector.add("Flecha");
-        selector.add("Borrar");
-        selector.add("Goma");
         
         selectorMover.add("Que desea mover");
         selectorMover.add("Rectangulo");
         selectorMover.add("Texto");
-        selectorMover.add("Testeo de Selector");
         selectorMover.add("Rectangulo y linea");
         
         r1=new JRadioButton("Dibujar");    
@@ -67,10 +64,11 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         r6=new JRadioButton("Mover");
         r7=new JRadioButton("Conectores");
         r8=new JRadioButton("Goma");
+        r9=new JRadioButton("Borrado multiple");
                 
         bg=new ButtonGroup();    
-        bg.add(r1);bg.add(r2);bg.add(r3);bg.add(r4);bg.add(r5);bg.add(r6);bg.add(r7);bg.add(r8);
-        add(r8);add(r1);add(r2);add(r3);add(r4); add(r5);add(r6);add(r7);
+        bg.add(r1);bg.add(r2);bg.add(r3);bg.add(r4);bg.add(r9);bg.add(r5);bg.add(r6);bg.add(r7);bg.add(r8);
+        add(r8);add(r1);add(r2);add(r3);add(r4);add(r9); add(r5);add(r6);add(r7);
         
         add(selector);
         add(selectorMover);
@@ -83,7 +81,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
     
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(selectorMover.getSelectedItem()=="Testeo de Selector"){
+        if(r9.isSelected()){
             w = new Point(e.getX(), e.getY());
         }
         if(selectorMover.getSelectedItem()=="Rectangulo"&&r6.isSelected()){
@@ -228,7 +226,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
+        if(r9.isSelected()){
             u = new Point(e.getX(), e.getY());
             w = u;
         }
@@ -248,7 +246,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
+        if(r9.isSelected()){
             for(int i = 0; i < p.getLista2().size(); i++){
                     if (new Rectangle(u.x,u.y,w.x,w.y).contains(new Rectangle(p.getLista2().get(i).getX(),p.getLista2().get(i).getY(),170,170))) {
                         p.getLista2().remove(i);
@@ -333,7 +331,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         for (Goma objGoma : p.getLista7()) {
             objGoma.paint(g);
         }
-        if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
+        if(r9.isSelected()){
             if (u != null && w != null) {
                 g2.setPaint(Color.red);
                 Shape r = makeRectangle(u.x, u.y, w.x, w.y);
