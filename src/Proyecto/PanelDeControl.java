@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Proyecto;
 
 import java.awt.Color;
@@ -57,22 +53,54 @@ public class PanelDeControl extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(b1)){
-           // panel2.
+            // panel2.
            System.out.println("1");
            p.add(p1);
            p1.setVisible(true);
            p2.setVisible(false);
            p.validate();
            p.repaint();
+           try{
+               for(int i=0;i<6;++i){
+                   ObjectOutputStream escribiendo_fichero1=new ObjectOutputStream(new FileOutputStream("C:\\Users\\sebaa\\Documents\\NetBeansProjects\\hola\\PRUEBASERIALIZACION/pruebaser1.dat"));
+                   escribiendo_fichero1.writeObject(v.getPizarra2());
+                   escribiendo_fichero1.flush();
+                   escribiendo_fichero1.close();
+                   Thread.sleep(100);
+                   }
+               
+               } catch (FileNotFoundException ex) {          
+                   Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+               } catch (IOException ex) {
+                   Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+               } catch (InterruptedException ex) {
+                   Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+               }
         }
         if(e.getSource().equals(b2)){
-           // panel2.
+            // panel2.
            System.out.println("2");
            p2.setVisible(true);
            p.add(p2);
            p1.setVisible(false);
            p.validate();
            p.repaint();
+           try{
+               for(int i=0;i<6;++i){
+                   ObjectOutputStream escribiendo_fichero1=new ObjectOutputStream(new FileOutputStream("C:\\Users\\sebaa\\Documents\\NetBeansProjects\\hola\\PRUEBASERIALIZACION/pruebaser1.dat"));
+                   escribiendo_fichero1.writeObject(v.getPizarra1());
+                   escribiendo_fichero1.flush();
+                   escribiendo_fichero1.close();
+                   Thread.sleep(100);
+                   }
+               
+               } catch (FileNotFoundException ex) {          
+                   Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+               } catch (IOException ex) {
+                   Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+               } catch (InterruptedException ex) {
+                   Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+               }
         }
         if(e.getSource().equals(bBorrarTodo)){
             Pizarra pTemp = new Pizarra();
@@ -83,36 +111,87 @@ public class PanelDeControl extends JPanel implements ActionListener{
             }
         }
         if(e.getSource().equals(bguardar)){
-            try{
-                    ObjectOutputStream escribiendo_fichero1=new ObjectOutputStream(new FileOutputStream("pruebaser1.dat"));
+            System.out.println("Guardado");
+            if(p1.isVisible()==true) {
+                try{
+                for(int i=0;i<6;++i){
+                    ObjectOutputStream escribiendo_fichero1=new ObjectOutputStream(new FileOutputStream("C:\\Users\\sebaa\\Documents\\NetBeansProjects\\hola\\PRUEBASERIALIZACION/pruebaser1.dat"));
                     escribiendo_fichero1.writeObject(v.getPizarra1());
                     escribiendo_fichero1.flush();
                     escribiendo_fichero1.close();
-        
-            } catch (FileNotFoundException ex) {
+                    Thread.sleep(100);
+                    }
+                } catch (FileNotFoundException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+                } catch (IOException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                } catch (InterruptedException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+            if(p2.isVisible()==true) {
+                try{
+                for(int i=0;i<6;++i){
+                    ObjectOutputStream escribiendo_fichero1=new ObjectOutputStream(new FileOutputStream("C:\\Users\\sebaa\\Documents\\NetBeansProjects\\hola\\PRUEBASERIALIZACION/pruebaser1.dat"));
+                    escribiendo_fichero1.writeObject(v.getPizarra2());
+                    escribiendo_fichero1.flush();
+                    escribiendo_fichero1.close();
+                    Thread.sleep(100);
+                    }
+                } catch (FileNotFoundException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+
                 
             
             
         }
         if(e.getSource().equals(bcargar)){
-            FileInputStream fileInputStream;
-            try {
-                fileInputStream = new FileInputStream("pruebaser1.dat");
-                ObjectInputStream objectInputStream= new ObjectInputStream(fileInputStream);
-                Pizarra p3 = (Pizarra) objectInputStream.readObject();
-                objectInputStream.close();
-                v.setPanelPizarra1(p3);
-            } catch (FileNotFoundException ex) {
+            System.out.println("Cargado");
+            if (p1.isVisible()==true) {
+                try {
+                    FileInputStream fileInputStream;
+                    Thread.sleep(100);
+                    fileInputStream = new FileInputStream("C:\\Users\\sebaa\\Documents\\NetBeansProjects\\hola\\PRUEBASERIALIZACION/pruebaser1.dat");
+                    ObjectInputStream objectInputStream= new ObjectInputStream(fileInputStream);
+                    Pizarra p3 = (Pizarra) objectInputStream.readObject();
+                    objectInputStream.close();
+                    v.setPanelPizarra1(p3);
+                } catch (FileNotFoundException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+                } catch (IOException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
+                } catch (ClassNotFoundException ex) {
                 Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            if (p2.isVisible()==true) {
+                try {
+                    FileInputStream fileInputStream;
+                    Thread.sleep(100);
+                    fileInputStream = new FileInputStream("C:\\Users\\sebaa\\Documents\\NetBeansProjects\\hola\\PRUEBASERIALIZACION/pruebaser1.dat");
+                    ObjectInputStream objectInputStream= new ObjectInputStream(fileInputStream);
+                    Pizarra p3 = (Pizarra) objectInputStream.readObject();
+                    objectInputStream.close();
+                    v.setPanelPizarra2(p3);
+                } catch (FileNotFoundException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                Logger.getLogger(PanelDeControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
             
         }
             
