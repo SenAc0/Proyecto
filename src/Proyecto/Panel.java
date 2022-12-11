@@ -14,7 +14,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -84,7 +83,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
     
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
+        if(selectorMover.getSelectedItem()=="Testeo de Selector"){
             w = new Point(e.getX(), e.getY());
         }
         if(selectorMover.getSelectedItem()=="Rectangulo"&&r6.isSelected()){
@@ -195,11 +194,6 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                 }
             }
             if(r4.isSelected()){
-                /*for(Rectangulo objRectangulo : getLista2()){
-                    if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
-                        getLista2().remove(objRectangulo);
-                    }
-                 }*/
                 for (int i = 0; i < p.getLista2().size(); i++) {
                     if (new Rectangle(p.getLista2().get(i).getX(),p.getLista2().get(i).getY(),170,170).contains(e.getPoint())){
                         p.getLista2().remove(i);
@@ -225,11 +219,6 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                         p.getLista5().remove(i);
                 }
                 }
-                /*for(Linea objLinea : getLista3()){
-                    if (new Rectangle(objLinea.getX1(),objLinea.getY1(),170,170).contains(e.getPoint())){
-                        getLista3().remove(objLinea);
-                    }
-                 }*/
             }
             repaint();
         }
@@ -259,9 +248,36 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(selector.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
+        if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
+            for(int i = 0; i < p.getLista2().size(); i++){
+                    if (new Rectangle(u.x,u.y,w.x,w.y).contains(new Rectangle(p.getLista2().get(i).getX(),p.getLista2().get(i).getY(),170,170))) {
+                        p.getLista2().remove(i);
+                }
+            }
+            for (int i = 0; i < p.getLista3().size(); i++) {
+                    if (new Rectangle(u.x,u.y,w.x,w.y).contains(new Rectangle(p.getLista3().get(i).getX1(),p.getLista3().get(i).getY1(),170,170))){
+                        p.getLista3().remove(i);
+                    }
+                }
+                for (int i = 0; i < p.getLista6().size(); i++) {
+                    if (new Rectangle(u.x,u.y,w.x,w.y).contains(new Rectangle(p.getLista6().get(i).getX1(),p.getLista6().get(i).getY1(),170,170))){
+                        p.getLista6().remove(i);
+                    }
+                }
+                for (int i = 0; i < p.getLista().size(); i++) {
+                    if (new Rectangle(u.x,u.y,w.x,w.y).contains(new Rectangle(p.getLista().get(i).getX(),p.getLista().get(i).getY(),170,170))){
+                        p.getLista().remove(i);
+                }
+                }
+                for (int i = 0; i < p.getLista5().size(); i++) {
+                    if (new Rectangle(u.x,u.y,w.x,w.y).contains(new Rectangle(p.getLista5().get(i).getX(),p.getLista5().get(i).getY(),170,170))){
+                        p.getLista5().remove(i);
+                }
+                }
+            
             u = null;
             w = null;
+            
         }
         if (selector.getSelectedItem()=="Rectangulo y linea"&&r6.isSelected()){
             RectanguloSelec = null;
@@ -317,7 +333,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         for (Goma objGoma : p.getLista7()) {
             objGoma.paint(g);
         }
-        if(selector.getSelectedItem()=="Testeo de Selector"){
+        if(selectorMover.getSelectedItem()=="Testeo de Selector"&&r6.isSelected()){
             if (u != null && w != null) {
                 g2.setPaint(Color.red);
                 Shape r = makeRectangle(u.x, u.y, w.x, w.y);
