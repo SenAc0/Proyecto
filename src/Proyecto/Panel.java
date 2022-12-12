@@ -215,7 +215,12 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                 for (int i = 0; i < p.getLista5().size(); i++) {
                     if (new Rectangle(p.getLista5().get(i).getX(),p.getLista5().get(i).getY(),170,170).contains(e.getPoint())){
                         p.getLista5().remove(i);
+                    }
                 }
+                for (int i = 0; i < p.getLista4().size(); i++) {
+                    if (new Rectangle(p.getLista4().get(i).getX(),p.getLista4().get(i).getY(),170,170).contains(e.getPoint())){
+                        p.getLista4().remove(i);
+                    }
                 }
             }
             repaint();
@@ -265,13 +270,19 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                 for (int i = 0; i < p.getLista().size(); i++) {
                     if (new Rectangle(u.x,u.y,w.x,w.y).contains(new Rectangle(p.getLista().get(i).getX(),p.getLista().get(i).getY(),170,170))){
                         p.getLista().remove(i);
-                }
+                    }
                 }
                 for (int i = 0; i < p.getLista5().size(); i++) {
                     if (new Rectangle(u.x,u.y,w.x,w.y).contains(new Rectangle(p.getLista5().get(i).getX(),p.getLista5().get(i).getY(),170,170))){
                         p.getLista5().remove(i);
+                    }
                 }
+                for (int i = 0; i < p.getLista4().size(); i++) {
+                    if (new Rectangle(p.getLista4().get(i).getX(),p.getLista4().get(i).getY(),170,170).contains(e.getPoint())){
+                        p.getLista4().remove(i);
+                    }
                 }
+
             
             u = null;
             w = null;
