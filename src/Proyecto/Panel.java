@@ -2,6 +2,15 @@ package Proyecto;
 
 import java.awt.Choice;
 import java.awt.Color;
+import static java.awt.Color.black;
+import static java.awt.Color.blue;
+import static java.awt.Color.cyan;
+import static java.awt.Color.gray;
+import static java.awt.Color.green;
+import static java.awt.Color.magenta;
+import static java.awt.Color.pink;
+import static java.awt.Color.red;
+import static java.awt.Color.yellow;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -25,6 +34,9 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
     
     Choice selector;
     Choice selectorMover;
+    Choice selectorColor;
+    
+    Color color;
     
     private Rectangulo RectanguloSeleccionado = null;
     private Rectangulo RectanguloSelec = null;
@@ -46,6 +58,9 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         
         selector = new Choice();
         selectorMover = new Choice();
+        selectorColor = new Choice();
+        
+        color = black;
         
         selector.add("Que conector desea");
         selector.add("Linea");
@@ -55,6 +70,18 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         selectorMover.add("Rectangulo");
         selectorMover.add("Texto");
         selectorMover.add("Rectangulo y linea");
+        
+        selectorColor.add("Color");
+        selectorColor.add("Rojo");
+        selectorColor.add("Azul");
+        selectorColor.add("Negro");
+        selectorColor.add("Verde");
+        selectorColor.add("Gris");
+        selectorColor.add("Amarillo");
+        selectorColor.add("Celeste");
+        selectorColor.add("Magenta");
+        selectorColor.add("Rosa");
+        
         
         r1=new JRadioButton("Dibujar");    
         r2=new JRadioButton("Rectangulo"); 
@@ -72,7 +99,9 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
         
         add(selector);
         add(selectorMover);
+        add(selectorColor);
         selector.addItemListener(this);
+        selectorColor.addItemListener(this);
         u = null;
         w = null;
     }
@@ -107,19 +136,19 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                 int iA = 0;
                 for (Linea objLinea : p.getLista3()) {
                     if(new Rectangle(objLinea.getX1()-50, objLinea.getY1()-50,100 , 100).contains(e.getPoint())){
-                        p.getLista3().set(iE,new Linea(e.getX(),e.getY(),objLinea.getX2(),objLinea.getY2()));
+                        p.getLista3().set(iE,new Linea(e.getX(),e.getY(),objLinea.getX2(),objLinea.getY2(),color));
                     }
                     else if(new Rectangle(objLinea.getX2()-50, objLinea.getY2()-50, 100, 100).contains(e.getPoint())){
-                        p.getLista3().set(iE,new Linea(objLinea.getX1(),objLinea.getY1(),e.getX(),e.getY()));
+                        p.getLista3().set(iE,new Linea(objLinea.getX1(),objLinea.getY1(),e.getX(),e.getY(),color));
                     }
                     iE++;
                 }
                 for (Flecha objFlecha : p.getLista6()) {
                     if(new Rectangle(objFlecha.getX1()-50, objFlecha.getY1()-50,100 , 100).contains(e.getPoint())){
-                        p.getLista6().set(iA,new Flecha(e.getX(),e.getY(),objFlecha.getX2(),objFlecha.getY2()));
+                        p.getLista6().set(iA,new Flecha(e.getX(),e.getY(),objFlecha.getX2(),objFlecha.getY2(),color));
                     }
                     else if(new Rectangle(objFlecha.getX2()-50, objFlecha.getY2()-50, 100, 100).contains(e.getPoint())){
-                        p.getLista6().set(iA,new Flecha(objFlecha.getX1(),objFlecha.getY1(),e.getX(),e.getY()));
+                        p.getLista6().set(iA,new Flecha(objFlecha.getX1(),objFlecha.getY1(),e.getX(),e.getY(),color));
                     }
                     iA++;
                 }
@@ -140,9 +169,6 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
             if (r8.isSelected()) {
                 p.getLista7().add(new Goma(e.getX()-50,e.getY()-50,100,100));
             }
-            if (selector.getSelectedItem()=="Label") {
-               //Aqui deberia ponerse una Label, para colocar
-            }
             if(selector.getSelectedItem()=="Linea"&&r7.isSelected()){
                  for(Rectangulo objRectangulo : p.getLista2()){
                     if (new Rectangle(objRectangulo.getX(),objRectangulo.getY(),170,170).contains(e.getPoint())){
@@ -150,7 +176,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                             u = new Point(e.getX(),e.getY());
                         }else{
                             w = new Point(e.getX(),e.getY());
-                            p.getLista3().add(new Linea( u.x, u.y ,w.x ,w.y ));
+                            p.getLista3().add(new Linea( u.x, u.y ,w.x ,w.y ,color));
                             repaint();
                             u = null;
                             w = null;
@@ -165,7 +191,7 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
                             u = new Point(e.getX(),e.getY());
                         }else{
                             w = new Point(e.getX(),e.getY());
-                            p.getLista6().add(new Flecha( u.x, u.y ,w.x ,w.y ));
+                            p.getLista6().add(new Flecha( u.x, u.y ,w.x ,w.y ,color));
                             repaint();
                             u = null;
                             w = null;
@@ -311,6 +337,33 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
     
     @Override
     public void itemStateChanged(ItemEvent e) {
+        if(selectorColor.getSelectedItem()=="Rojo"){
+            color = red;
+        }
+        if(selectorColor.getSelectedItem()=="Azul"){
+            color= blue;
+        }
+        if(selectorColor.getSelectedItem()=="Negro"){
+            color= black;
+        }
+        if(selectorColor.getSelectedItem()=="Verde"){
+            color= green;
+        }
+        if(selectorColor.getSelectedItem()=="Gris"){
+            color= gray;
+        }
+        if(selectorColor.getSelectedItem()=="Amarillo"){
+            color= yellow;
+        }
+        if(selectorColor.getSelectedItem()=="Celeste"){
+            color= cyan;
+        }
+        if(selectorColor.getSelectedItem()=="Magenta"){
+            color= magenta;
+        }
+        if(selectorColor.getSelectedItem()=="Rosa"){
+            color= pink;
+        }
 
     }
         @Override
@@ -327,7 +380,6 @@ public class Panel extends JPanel implements MouseMotionListener, MouseListener,
             objOvalo.paint(g);
         }
         for (Linea objLinea : p.getLista3()) {
-            g.setColor(Color.black);
             objLinea.paint(g);
         }
         for (Flecha objFlecha : p.getLista6()) {
